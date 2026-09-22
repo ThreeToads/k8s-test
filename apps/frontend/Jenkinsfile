@@ -15,11 +15,13 @@ pipeline {
 		sh 'docker build -t two-apps/frontend:jenkins ./apps/frontend'
             }
         }
-
-        stage('Test') {
+	stage('Test') {
             steps {
                 echo 'Running frontend smoke test'
-		sh 'docker run --rm two-apps/frontend:jenkins python -c "print(\"frontend test passed\")"'
+                sh '''
+                    docker run --rm two-apps/frontend:jenkins \
+                      python -c 'print("frontend test passed")'
+                '''
             }
         }
     }
