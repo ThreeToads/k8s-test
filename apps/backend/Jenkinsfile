@@ -16,10 +16,13 @@ pipeline {
             }
         }
 
-        stage('Test') {
+	stage('Test') {
             steps {
-                echo 'Running backend test'
-                sh 'docker run --rm two-apps/backend:jenkins python -c "import flask; print(\"backend test passed\")"'
+                echo 'Running backend smoke test'
+                sh '''
+                    docker run --rm two-apps/backend:jenkins \
+                      python -c 'import flask; print("backend test passed")'
+                '''
             }
         }
     }
