@@ -1,0 +1,15 @@
+frontend:
+  image: two-apps/frontend:1.0
+  replicas: 1
+  nodeSelector: {}
+
+backend:
+  image: two-apps/backend:1.0
+  replicas: 1
+  service:
+    name: backend
+    port: 8080
+  nodeSelector:
+    kubernetes.io/hostname: kind-worker
+
+requestInterval: 5

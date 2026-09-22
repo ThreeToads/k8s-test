@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: {{ .Values.frontend.replicas }}
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      nodeSelector:
+        {{- toYaml .Values.frontend.nodeSelector | nindent 8 }}
+      containers:
+        - name: frontend
+          image: {{ .Values.frontend.image }}
+          env:
+            - name: BACKEND_SERVICE
+              value: "{{ .Values.backend.service.name }}:{{ .Values.backend.service.port }}"
+            - name: REQUEST_INTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-config
+                  key: REQUEST_INTERVAL
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName

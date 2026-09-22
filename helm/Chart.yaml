@@ -1,0 +1,6 @@
+apiVersion: v2
+name: two-apps
+description: Helm Chart for front/back apps
+type: application
+version: 1.0.0
+appVersion: "1.0"
