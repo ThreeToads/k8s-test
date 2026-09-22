@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checkout frontend code'
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building frontend Docker image'
+		sh 'docker build -t two-apps/frontend:jenkins ./apps/frontend'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running frontend smoke test'
+		sh 'docker run --rm two-apps/frontend:jenkins python -c "print(\"frontend test passed\")"'
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checkout backend code'
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building backend Docker image'
+                sh 'docker build -t two-apps/backend:jenkins ./apps/backend'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running backend test'
+                sh 'docker run --rm two-apps/backend:jenkins python -c "import flask; print(\"backend test passed\")"'
+            }
+        }
+    }
+}
